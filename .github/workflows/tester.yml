@@ -35,5 +35,6 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Auto update USA configs"
-            git push origin HEAD:${{ github.ref_name }}
+            git pull --rebase origin main || true
+            git push --force origin main
           fi
