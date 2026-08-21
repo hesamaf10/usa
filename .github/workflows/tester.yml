@@ -1,0 +1,32 @@
+name: Test USA Configs From USA Server
+
+on:
+  schedule:
+    - cron: '0 */1 * * *' # هر ۱ ساعت یک‌بار خودکار از داخل آمریکا اسکن انجام می‌شود
+  workflow_dispatch:
+
+jobs:
+  test-from-usa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests urllib3
+
+      - name: Run USA Tester
+        run: python test_from_usa.py
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add usa_config.txt
+          git commit -m "Updated best USA config tested from USA" || exit 0
+          git push
